@@ -3,11 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokédex Ultra</title>
-
-<!-- Master Ball favicon (tab icon) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='35%25' r='70%25'%3E%3Cstop offset='0%25' stop-color='%23ffb3ff'/%3E%3Cstop offset='60%25' stop-color='%238a2be2'/%3E%3Cstop offset='100%25' stop-color='%235b1a8a'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='28' fill='url(%23g)' stroke='%23333' stroke-width='4'/%3E%3Cpath d='M4 32h56' stroke='%23333' stroke-width='6'/%3E%3Ccircle cx='32' cy='32' r='10' fill='white' stroke='%23333' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23ddd'/%3E%3Ccircle cx='22' cy='18' r='6' fill='%23ff7ad9' opacity='0.9'/%3E%3Ccircle cx='41' cy='17' r='6' fill='%234dd9ff' opacity='0.9'/%3E%3C/svg%3E">
-
+  <title>Pokédex Pro</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -248,31 +244,10 @@
       <div class="pokemon-fact" id="pokemonFact">Did you know? Pikachu was originally going to be called "Pikachū"!</div>
     </div>
 
-  <div class="app-header">
-  <div style="display:flex; align-items:center; gap:14px;">
-    <!-- Master Ball logo (inline SVG) -->
-    <svg width="44" height="44" viewBox="0 0 64 64" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));">
-      <defs>
-        <radialGradient id="mbg" cx="50%" cy="35%" r="70%">
-          <stop offset="0%" stop-color="#ffb3ff"/>
-          <stop offset="60%" stop-color="#8a2be2"/>
-          <stop offset="100%" stop-color="#5b1a8a"/>
-        </radialGradient>
-      </defs>
-      <circle cx="32" cy="32" r="28" fill="url(#mbg)" stroke="#333" stroke-width="4"/>
-      <path d="M4 32h56" stroke="#333" stroke-width="6"/>
-      <circle cx="32" cy="32" r="10" fill="white" stroke="#333" stroke-width="4"/>
-      <circle cx="32" cy="32" r="4" fill="#ddd"/>
-      <circle cx="22" cy="18" r="6" fill="#ff7ad9" opacity="0.9"/>
-      <circle cx="41" cy="17" r="6" fill="#4dd9ff" opacity="0.9"/>
-    </svg>
-
-    <div>
-      <div class="app-title" style="margin-bottom:2px;">Ultra Pokédex</div>
+    <div class="app-header">
+      <div class="app-title">Pokédex Pro</div>
       <div class="app-subtitle">Comprehensive Pokémon Encyclopedia</div>
     </div>
-  </div>
-</div>
 
     <div class="search-section">
       <div class="search-box">
@@ -362,109 +337,6 @@ function getImg(id) {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
   }
 }
-
-// -----------------------------
-// GLITCH DEX (ALL 000–255) + specials
-// Type exact name, press Enter to open
-// -----------------------------
-
-// Create a pixel glitch image (no external links needed)
-function glitchImgDataUri(label) {
-  const txt = encodeURIComponent(label);
-  const svg =
-`<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
-  <defs>
-    <linearGradient id="g" x1="0" x2="1">
-      <stop offset="0" stop-color="#111"/>
-      <stop offset="1" stop-color="#333"/>
-    </linearGradient>
-  </defs>
-  <rect width="256" height="256" fill="url(#g)"/>
-  <g opacity="0.9">
-    ${Array.from({length: 120}).map(() => {
-      const x = Math.floor(Math.random()*256);
-      const y = Math.floor(Math.random()*256);
-      const w = Math.floor(Math.random()*60)+6;
-      const h = Math.floor(Math.random()*20)+4;
-      const c = ["#ff6b6b","#00f2fe","#667eea","#f8d030","#78c850","#a040a0","#f85888","#b8b8d0"][Math.floor(Math.random()*8)];
-      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" opacity="0.35"/>`;
-    }).join("")}
-  </g>
-  <rect x="18" y="170" width="220" height="64" rx="14" fill="rgba(0,0,0,0.55)"/>
-  <text x="128" y="206" text-anchor="middle" font-family="Segoe UI, Arial" font-size="20" fill="white">GLITCH</text>
-  <text x="128" y="232" text-anchor="middle" font-family="Segoe UI, Arial" font-size="16" fill="#ddd">${label}</text>
-</svg>`;
-  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-}
-
-// Deterministic-ish stats from a string (so each glitch feels unique)
-function glitchStatsFromName(name) {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
-  const pick = (min, max, salt) => min + ((h + salt) % (max - min + 1));
-  return [
-    { name: "HP", value: pick(1, 255, 11) },
-    { name: "Attack", value: pick(1, 255, 22) },
-    { name: "Defense", value: pick(0, 255, 33) },
-    { name: "Special Attack", value: pick(1, 255, 44) },
-    { name: "Special Defense", value: pick(1, 255, 55) },
-    { name: "Speed", value: pick(1, 255, 66) }
-  ];
-}
-
-// All glitch entries: Glitch-000 ... Glitch-255
-const glitchDex = {};
-for (let i = 0; i <= 255; i++) {
-  const id = String(i).padStart(3, "0");
-  const name = `Glitch-${id}`;
-  glitchDex[name] = {
-    description: "A Gen I index/memory glitch entity. Behavior depends on encounter conditions and can cause strange visuals, item effects, or save corruption.",
-    types: ["???", "GLITCH"],
-    height: Number(((i % 50) / 10 + 0.6).toFixed(1)),
-    weight: Number(((i * 7) % 2000 / 10).toFixed(1)),
-    rarity: "GLITCH",
-    stats: glitchStatsFromName(name),
-    moves: ["—", "—", "—"],
-    image: glitchImgDataUri(id)
-  };
-}
-
-// Specials (exact names to type + Enter)
-glitchDex["MissingNo."] = {
-  description: "A famous Gen I glitch Pokémon. Encountering MissingNo. can cause bizarre visual effects and (sometimes) save corruption. Often associated with the Old Man glitch.",
-  types: ["Bird", "Normal"],
-  height: 3.0,
-  weight: 1590.8,
-  rarity: "GLITCH",
-  stats: [
-    { name: "HP", value: 33 },
-    { name: "Attack", value: 136 },
-    { name: "Defense", value: 0 },
-    { name: "Special Attack", value: 6 },
-    { name: "Special Defense", value: 6 },
-    { name: "Speed", value: 29 }
-  ],
-  moves: ["Water Gun", "Water Gun", "Sky Attack"],
-  image: "https://archives.bulbagarden.net/media/upload/9/98/Missingno_RB.png"
-};
-
-glitchDex["M"] = {
-  description: "The classic 'M' glitch entity from Gen I memory/index behavior. Effects vary by version and encounter method.",
-  types: ["???", "Normal"],
-  height: 2.2,
-  weight: 420.0,
-  rarity: "GLITCH",
-  stats: glitchStatsFromName("M"),
-  moves: ["Psywave", "Self-Destruct", "Sky Attack"],
-  image: "https://archives.bulbagarden.net/media/upload/6/6e/M_RB.png"
-};
-
-// -----------------------------
-// TERA MODE STATE
-// -----------------------------
-let teraEnabled = false;
-let teraType = "normal";
-
 
 function startApp() {
   document.getElementById('splashScreen').classList.add('hidden');
@@ -644,13 +516,15 @@ function initButtons() {
   renderFavoritesList();
 }
 
+document.getElementById('searchInput').addEventListener('input', renderPokemon);
 document.getElementById('searchInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
-    const raw = this.value.trim(); // exact match required
-    if (glitchDex[raw]) showGlitch(raw);
+    const searchTerm = this.value.trim();
+    if (searchTerm === 'MissingNo.') {
+      showMissingNo();
+    }
   }
 });
-
 document.getElementById('typeFilter').addEventListener('change', renderPokemon);
 document.getElementById('rarityFilter').addEventListener('change', renderPokemon);
 document.addEventListener('DOMContentLoaded', initButtons);
@@ -677,9 +551,7 @@ async function showDetail(name) {
   const moves = pokemon.moves.slice(0, 50).map(m => 
     `<span class="move-chip" onclick="showMove('${m.move.name}')">${m.move.name}</span>`
   ).join('');
-  const baseTypes = typeCache[name];
-const effectiveTypes = (teraEnabled ? [teraType] : baseTypes);
-const weaknesses = calculateWeaknesses(effectiveTypes);
+  const weaknesses = calculateWeaknesses(typeCache[name]);
   const weaknessHTML = Object.entries(weaknesses).sort((a,b) => b[1] - a[1]).map(([type, mult]) => {
     let className = '';
     let text = '';
@@ -695,30 +567,7 @@ const weaknesses = calculateWeaknesses(effectiveTypes);
       <div class="section-title">Description</div>
       <div class="description-text">${description}</div>
       <div class="type-badges">${typeBadges}</div>
-      
-    <div style="margin: 18px 0; padding: 14px; border-radius: 14px; background: #f0f4ff;">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-        <div style="font-weight:800; color:#333;">Tera Mode</div>
-        <button id="teraToggle"
-          style="padding:10px 14px; border:none; border-radius:12px; cursor:pointer; font-weight:800; background:linear-gradient(135deg,#667eea,#764ba2); color:white;">
-          OFF
-        </button>
-      </div>
-      <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
-        <div style="font-weight:700; color:#555;">Tera Type</div>
-        <select id="teraSelect" style="flex:1; padding:10px 12px; border-radius:12px; border:2px solid #e0e0e0; outline:none;">
-          ${Object.keys(typeChart).map(t => `<option value="${t}">${t.toUpperCase()}</option>`).join("")}
-        </select>
-      </div>
-      <div style="margin-top:10px; font-size:13px; color:#666;">
-        When ON: effectiveness is calculated as if the Pokémon is <strong>only</strong> the Tera type.
-      </div>
-    </div>
-      
       <div class="info-row">
-
-
-
         <span class="info-label">Height</span>
         <span class="info-value">${(pokemon.height / 10).toFixed(1)} m</span>
       </div>
@@ -809,55 +658,6 @@ function closeMove() {
   document.getElementById('moveOverlay').classList.remove('active');
 }
 
-// Tera UI wiring
-teraEnabled = false;
-teraType = (typeCache[name]?.[0] || "normal");
-
-const teraToggle = document.getElementById("teraToggle");
-const teraSelect = document.getElementById("teraSelect");
-if (teraSelect) teraSelect.value = teraType;
-
-function refreshEffectiveness() {
-  const effectiveTypes = (teraEnabled ? [teraType] : (typeCache[name] || []));
-  const w = calculateWeaknesses(effectiveTypes);
-
-  const weaknessHTML = Object.entries(w).sort((a,b) => b[1] - a[1]).map(([type, mult]) => {
-    let className = '';
-    let text = '';
-    if (mult === 4) { className = 'weakness-4x'; text = `${type} (4x)`; }
-    else if (mult === 2) { className = 'weakness-2x'; text = `${type} (2x)`; }
-    else if (mult === 0.5) { className = 'weakness-0-5x'; text = `${type} (½x)`; }
-    else if (mult === 0.25) { className = 'weakness-0-25x'; text = `${type} (¼x)`; }
-    else if (mult === 0) { className = 'weakness-0x'; text = `${type} (Immune)`; }
-    return className ? `<div class="weakness-chip ${className}">${text}</div>` : '';
-  }).join('');
-
-  const grid = document.querySelector(".weakness-grid");
-  if (grid) grid.innerHTML = weaknessHTML;
-}
-
-if (teraToggle) {
-  const paint = () => {
-    teraToggle.textContent = teraEnabled ? "ON" : "OFF";
-    teraToggle.style.opacity = teraEnabled ? "1" : "0.75";
-  };
-  paint();
-
-  teraToggle.addEventListener("click", () => {
-    teraEnabled = !teraEnabled;
-    paint();
-    refreshEffectiveness();
-  });
-}
-
-if (teraSelect) {
-  teraSelect.addEventListener("change", (e) => {
-    teraType = e.target.value;
-    if (teraEnabled) refreshEffectiveness();
-  });
-}
-
-
 async function loadEvolutionChain(species) {
   const evolutionChain = document.getElementById('evolutionChain');
   try {
@@ -868,7 +668,6 @@ async function loadEvolutionChain(species) {
     evolutionChain.innerHTML = '<p style="text-align: center; color: #999;">No evolution data available</p>';
   }
 }
-
 
 async function buildEvolutionChain(chain) {
   function getMethodText(details) {
@@ -883,7 +682,7 @@ async function buildEvolutionChain(chain) {
     const pokemonData = await fetch(`https://pokeapi.co/api/v2/pokemon/${speciesName}`).then(r => r.json());
     return `
       <div class="evolution-card" onclick="showDetail('${speciesName}')">
-        <img src="${getImg(pokemonData.id)}" alt="${speciesName}">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png" alt="${speciesName}">
         <div class="evolution-name">${speciesName}</div>
       </div>
     `;
@@ -934,8 +733,7 @@ async function loadForms(species) {
         else badge = 'Form';
         formsHtml += `
           <div class="form-card" onclick="showDetail('${formData.name}')">
-            <img src="${getImg(formData.id)}"
- 
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${formData.id}.png" 
                  alt="${formName}"
                  onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${formData.id}.png'">
             <div class="form-name">${formName}</div>
@@ -1044,79 +842,6 @@ function showMissingNo() {
     </div>
   `;
 }
-
-function showGlitch(glitchName) {
-  const g = glitchDex[glitchName];
-  if (!g) return;
-
-  document.getElementById('detailView').classList.add('active');
-  document.getElementById('detailTitle').textContent = glitchName;
-
-  const typeBadges = (g.types || []).map(t =>
-    `<span class="type-badge" style="background:#68A090">${t}</span>`
-  ).join('');
-
-  const stats = (g.stats || []).map(s =>
-    `<div class="stat-row">
-      <span class="stat-name">${s.name}</span>
-      <span class="stat-value">${s.value}</span>
-    </div>`
-  ).join('');
-
-  const moves = (g.moves || []).map(m =>
-    `<span class="move-chip" style="cursor:default; opacity:0.7;">${m}</span>`
-  ).join('');
-
-  document.getElementById('detailGrid').innerHTML = `
-    <div class="detail-section">
-      <div class="section-title">Description</div>
-      <div class="description-text">${g.description || "Corrupted data."}</div>
-      <div class="type-badges">${typeBadges}</div>
-      <div class="info-row"><span class="info-label">Height</span><span class="info-value">${g.height ?? "—"} m</span></div>
-      <div class="info-row"><span class="info-label">Weight</span><span class="info-value">${g.weight ?? "—"} kg</span></div>
-      <div class="info-row"><span class="info-label">Rarity</span><span class="info-value" style="color:#ff0000; font-weight:900;">${g.rarity || "GLITCH"}</span></div>
-    </div>
-
-    <div class="detail-section pokemon-image-section">
-      <div class="section-title">Entity</div>
-      <img src="${g.image}" class="pokemon-main-image" alt="${glitchName}" style="image-rendering:pixelated;">
-      <div class="section-title" style="margin-top:20px;">Base Stats</div>
-      <div class="stats-grid">${stats}</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="section-title">Known Moves</div>
-      <div class="moves-container">${moves}</div>
-      <p style="margin-top:15px; font-size:13px; color:#999; text-align:center;">⚠️ Move data corrupted</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="section-title">Type Effectiveness</div>
-      <div style="text-align:center; padding:40px; color:#999;">
-        <div style="font-size:48px; margin-bottom:10px;">⚠️</div>
-        <p>Type chart data unavailable for glitch entities</p>
-      </div>
-    </div>
-
-    <div class="detail-section full-width">
-      <div class="section-title">Evolution Chain</div>
-      <div style="text-align:center; padding:40px; color:#999;">
-        <div style="font-size:48px; margin-bottom:10px;">❌</div>
-        <p>Evolution data corrupted</p>
-      </div>
-    </div>
-
-    <div class="detail-section full-width" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color:white;">
-      <div class="section-title" style="color:white; border-bottom-color:white;">⚠️ WARNING</div>
-      <div style="padding:20px; line-height:1.8; text-align:center;">
-        <p style="font-weight:600; font-size:18px;">Gen I index/memory glitch data</p>
-        <p style="margin-top:15px;">Glitch encounters can cause item duplication, visual glitches, or save corruption depending on method and game version.</p>
-      </div>
-    </div>
-  `;
-}
-
-
 </script>
 </body>
 </html>
