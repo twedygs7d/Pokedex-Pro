@@ -15,7 +15,7 @@
     .splash-screen { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.5s ease; }
     .splash-screen.hidden { opacity: 0; pointer-events: none; }
     .splash-logo { font-size: 72px; font-weight: 900; color: white; text-shadow: 4px 4px 8px rgba(0,0,0,0.3); margin-bottom: 30px; letter-spacing: 3px; }
-    .pokeball-loader { width: 100px; height: 100px; object-fit: contain; image-rendering: pixelated; animation: rotate 1.5s linear infinite; cursor: pointer; transition: transform 0.3s ease; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+    .pokeball-loader { width: 100px; height: 100px; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated; animation: rotate 1.5s linear infinite; cursor: pointer; transition: transform 0.3s ease; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
     .pokeball-loader:hover { transform: scale(1.1); }
     @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .splash-text { color: white; font-size: 20px; margin-top: 30px; font-weight: 500; }
@@ -67,7 +67,7 @@
     /* MAIN APP HEADER */
     .app-header { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); padding: 25px 30px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 20px; }
     .header-logo { display: flex; align-items: center; gap: 15px; }
-    .masterball-logo { width: 65px; height: 65px; object-fit: contain; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25)); }
+    .masterball-logo { width: 65px; height: 65px; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated; flex-shrink: 0; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25)); }
     .header-text { flex: 1; }
     .app-title { font-size: 36px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); margin-bottom: 5px; }
     .app-subtitle { font-size: 14px; opacity: 0.9; font-weight: 400; }
@@ -144,7 +144,7 @@
     .form-badge { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; margin-top: 5px; font-weight: 600; }
 
     /* MOVE OVERLAY */
-    .move-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(5px); }
+    .move-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
     .move-overlay.active { display: flex; }
     .move-modal { background: white; border-radius: 25px; padding: 40px; max-width: 600px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; animation: slideUp 0.3s ease; }
     @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -197,6 +197,76 @@
     body.dark .move-info-row { background: #0b1224; }
     body.dark .move-label { color: #9ca3af; }
     body.dark .move-description { background: #1e293b; color: #cbd5e1; }
+
+    /* ============ RESPONSIVE / CROSS-DEVICE ============ */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    img { max-width: 100%; }
+
+    /* Tablets & small laptops */
+    @media (max-width: 1024px) {
+      .app-container { height: 92vh; }
+      .detail-grid { gap: 18px; }
+      .app-title { font-size: 30px; }
+    }
+
+    /* Large phones & small tablets */
+    @media (max-width: 768px) {
+      body { padding: 0; align-items: stretch; }
+      .app-container { max-width: 100%; height: 100vh; height: 100dvh; border-radius: 0; }
+      .app-header { padding: 16px 18px; gap: 14px; }
+      .masterball-logo { width: 50px; height: 50px; }
+      .app-title { font-size: 24px; margin-bottom: 2px; }
+      .app-subtitle { font-size: 12px; }
+      .search-section { padding: 16px 18px; }
+      .content-area { padding: 16px 18px; }
+      .pokemon-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+      .pokemon-card { padding: 16px; }
+      .pokemon-card img { width: 100px; height: 100px; }
+      .detail-grid { grid-template-columns: 1fr; gap: 16px; }
+      .detail-header { padding: 18px; }
+      .detail-title { font-size: 24px; }
+      .detail-body { padding: 18px; }
+      .detail-section { padding: 18px; }
+      .pokemon-main-image { width: 190px; height: 190px; }
+      .splash-logo { font-size: 46px; letter-spacing: 1px; text-align: center; padding: 0 16px; max-width: 100%; overflow-wrap: break-word; }
+      .loading-title { font-size: 28px; text-align: center; }
+      .loading-bar-container { width: 88%; }
+      .pokemon-fact { font-size: 17px; padding: 18px; }
+      .sidebar { width: min(320px, 88vw); right: calc(-1 * min(320px, 88vw)); }
+      .move-modal { padding: 26px; max-height: 88vh; overflow-y: auto; }
+      .move-title { font-size: 26px; }
+    }
+
+    /* Small phones */
+    @media (max-width: 430px) {
+      .app-header { padding: 14px 14px; gap: 10px; }
+      .masterball-logo { width: 42px; height: 42px; }
+      .app-title { font-size: 21px; }
+      .app-subtitle { font-size: 11px; }
+      .search-box { padding: 12px 15px; }
+      .pokemon-grid { grid-template-columns: repeat(auto-fill, minmax(116px, 1fr)); gap: 12px; }
+      .pokemon-card { padding: 12px; border-radius: 16px; }
+      .pokemon-card img { width: 84px; height: 84px; }
+      .pokemon-card-name { font-size: 14px; }
+      .filters { flex-direction: column; gap: 10px; }
+      .splash-logo { font-size: 34px; }
+      .pokeball-loader { width: 84px; height: 84px; }
+      .hamburger-btn { width: 44px; height: 44px; top: 12px; right: 12px; }
+      .detail-title { font-size: 21px; }
+      .type-badge { padding: 6px 14px; font-size: 12px; }
+    }
+
+    /* Touch devices: avoid sticky :hover lift, give a tap feedback instead */
+    @media (hover: none) {
+      .pokemon-card:hover { transform: none; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+      .pokemon-card:active { transform: scale(0.98); }
+      .gui-button:hover, .favorite-item:hover { transform: none; }
+    }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    }
   </style>
 </head>
 <body>
