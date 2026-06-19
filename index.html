@@ -333,10 +333,11 @@
     </div>
 
     <div class="search-section">
-      <div class="search-box">
+      <form class="search-box" id="searchForm" onsubmit="return false;">
         <span style="font-size: 20px;">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search Pokémon by name or number...">
-      </div>
+        <input type="text" id="searchInput" placeholder="Search Pokémon by name or number..."
+               autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </form>
       <div class="filters">
         <div class="filter-box"><select id="typeFilter"><option value="">All Types</option></select></div>
         <div class="filter-box"><select id="rarityFilter"><option value="">All Rarities</option><option value="Common">Common</option><option value="Legendary">Legendary</option><option value="Mythical">Mythical</option></select></div>
@@ -899,10 +900,24 @@ function initButtons() {
 }
 
 document.getElementById('searchInput').addEventListener('input', renderPokemon);
-document.getElementById('searchInput').addEventListener('keypress', function(e) {
+// Use form submit so the on-screen "Go"/"Search" key on phones & tablets works
+// (the keypress event is unreliable on touch keyboards).
+function trySubmitSearch() {
+  const searchTerm = document.getElementById('searchInput').value.trim();
+  if (glitchPokemon[searchTerm]) {
+    showGlitchPokemon(searchTerm);
+    document.getElementById('searchInput').blur(); // dismiss the mobile keyboard
+  }
+}
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  trySubmitSearch();
+});
+// Fallback for hardware keyboards / browsers that don't fire form submit
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
-    const searchTerm = this.value.trim();
-    if (glitchPokemon[searchTerm]) showGlitchPokemon(searchTerm);
+    e.preventDefault();
+    trySubmitSearch();
   }
 });
 document.getElementById('typeFilter').addEventListener('change', renderPokemon);
